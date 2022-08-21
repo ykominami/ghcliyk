@@ -17,7 +17,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 # Default to bash
@@ -35,7 +35,7 @@ jobs:
       - name: Install Hugo CLI
         run: |
           wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb && touch config.toml
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -46,6 +46,7 @@ jobs:
       - name: Build with Hugo
         run: |
           hugo \
+            --config config.toml \
             --minify \
             --baseURL ${{ steps.pages.outputs.base_url }}
       - name: Upload artifact
